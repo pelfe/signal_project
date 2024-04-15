@@ -4,10 +4,26 @@ import java.util.Random;
 
 import com.cardio_generator.outputs.OutputStrategy;
 
+
+/**
+ * A Generator for BloodSaturation Data.
+ * Generates pseudo Data based on random numbers
+ * 
+ * Usage:
+ * Initialize with the total number of patients that will be simulated
+ * Then call .generate() to generate the next data point for a given patient
+ */
 public class BloodSaturationDataGenerator implements PatientDataGenerator {
     private static final Random random = new Random();
     private int[] lastSaturationValues;
 
+    /**
+     * Prepares for data generation by initializing the starting points for each patient
+     * 
+     * Own opinion: bad idea to couple ids and number of patients
+     * and to set the number in the generators in stone
+     * @param patientCount total number of patients for which data may be generated
+     */
     public BloodSaturationDataGenerator(int patientCount) {
         lastSaturationValues = new int[patientCount + 1];
 
@@ -17,6 +33,13 @@ public class BloodSaturationDataGenerator implements PatientDataGenerator {
         }
     }
 
+    
+    /** 
+     * Initializes the next data point for the given patient
+     * 
+     * @param patientId the id of the patient
+     * @param outputStrategy the output strategy
+     */
     @Override
     public void generate(int patientId, OutputStrategy outputStrategy) {
         try {

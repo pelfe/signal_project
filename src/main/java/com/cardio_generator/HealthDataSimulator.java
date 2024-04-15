@@ -25,6 +25,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+/**
+ * This is the top level class of the HealthDataSimulation Project.
+ * It controls the patient simulation regarding number,
+ *  intialization, schedules and outputs of the main programm.
+ * It also is holder of the random number generator.
+ * 
+ * Usage:
+ * This class is used to start a Simualtion and
+ *  optionally manually set the main parameters (patient_number, output type)
+ * 
+ * @author unknown
+ */
 public class HealthDataSimulator {
 
     private static int patientCount = 50; // Default number of patients
@@ -32,6 +44,14 @@ public class HealthDataSimulator {
     private static OutputStrategy outputStrategy = new ConsoleOutputStrategy(); // Default output strategy
     private static final Random random = new Random();
 
+    
+    /** 
+     * takes the additional starting parameters for the class.
+     * Then initializes the patients and schedules their tasks
+     * 
+     * @param args optional arguments to set the number of patients or the output type
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
 
         parseArguments(args);
@@ -44,6 +64,16 @@ public class HealthDataSimulator {
         scheduleTasksForPatients(patientIds);
     }
 
+    
+    
+    /** 
+     * parses the arguments given to the HealthDataSimulator as a String and
+     * uses them to set parameters accordingly
+     * 
+     * @param args
+     * @throws IOException
+     * 
+     */
     private static void parseArguments(String[] args) throws IOException {
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
@@ -105,6 +135,10 @@ public class HealthDataSimulator {
         }
     }
 
+    /**
+     * prints additional information about the parameters
+     * that can be given to the class. Example included. 
+     */
     private static void printHelp() {
         System.out.println("Usage: java HealthDataSimulator [options]");
         System.out.println("Options:");
@@ -122,6 +156,14 @@ public class HealthDataSimulator {
                 "  This command simulates data for 100 patients and sends the output to WebSocket clients connected to port 8080.");
     }
 
+    
+    /** 
+     * Initializes a given number of patients as ids in a list.
+     * The ids start at 1 and go up to the number of patients
+     * 
+     * @param patientCount the number of patients to be initialized
+     * @return List<Integer> a list with unique patient ids
+     */
     private static List<Integer> initializePatientIds(int patientCount) {
         List<Integer> patientIds = new ArrayList<>();
         for (int i = 1; i <= patientCount; i++) {
@@ -130,6 +172,14 @@ public class HealthDataSimulator {
         return patientIds;
     }
 
+    
+    /** 
+     * Initializes Data Generating Objects for:
+     * ecg, bloodSaturation, bloodPressure, bloodLevel and alert
+     * Then it schedules the repeated calling of theses Generators in the scheduler
+     * 
+     * @param patientIds A list with patient_ids
+     */
     private static void scheduleTasksForPatients(List<Integer> patientIds) {
         ECGDataGenerator ecgDataGenerator = new ECGDataGenerator(patientCount);
         BloodSaturationDataGenerator bloodSaturationDataGenerator = new BloodSaturationDataGenerator(patientCount);
@@ -144,8 +194,15 @@ public class HealthDataSimulator {
             scheduleTask(() -> bloodLevelsDataGenerator.generate(patientId, outputStrategy), 2, TimeUnit.MINUTES);
             scheduleTask(() -> alertGenerator.generate(patientId, outputStrategy), 20, TimeUnit.SECONDS);
         }
-    }
-
+    }  
+    
+    /** 
+     * passes a method to the scheduler so it gets called in repeating intervalls
+     * 
+     * @param task The method to be called
+     * @param period How often the method should be called
+     * @param timeUnit The time-unit for the period parameter
+     */
     private static void scheduleTask(Runnable task, long period, TimeUnit timeUnit) {
         scheduler.scheduleAtFixedRate(task, random.nextInt(5), period, timeUnit);
     }
