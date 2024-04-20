@@ -37,6 +37,7 @@ public class BloodSaturationDataGenerator implements PatientDataGenerator {
     /** 
      * Initializes the next data point for the given patient
      * 
+     * 
      * @param patientId the id of the patient
      * @param outputStrategy the output strategy
      */
