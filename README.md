@@ -67,3 +67,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Project Members
 - Student ID: 6365814
 - Student ID: 6349669
+
+## Uml Diagramms folder:
+https://github.com/pelfe/signal_project/tree/master/uml_diagramms
