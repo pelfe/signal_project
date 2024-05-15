@@ -1,0 +1,9 @@
+We added two classes, called Patient and MedicalRecord. Patient knows that there's a medical record attributed to each patient and this is one to one, meaning that there must exist exactly one medical record for each patient. Patient keeps account on whom we're operating, while MedicalRecord keeps track on the medical aspects, thus we achieve general modularity of design. If we want to add a new class that needs patient, then we don't need MedicalRecords and vice versa.
+
+AlertGenerator uses MedicalRecord to make judgements upon when to do alert for some patient. So inside AlerGenerator, we will make an alert if there's some value above
+
+All of the data generators can update the same medical record. MedicalRecord collects all of this data together into a coherent whole, which then can be accessed anywhere using getter and setter methods.
+
+PatientDataGenerator gives the framework for general data generator outlook, thus producing abstraction and encapsulation. All of the generator classes use generate method in different forms to generate the medical record for the patient.
+
+Again, all of these UML diagram classes are here to help with the implementation, so this just gives a rough look on how it could be implemented. Not the perfect implementation, but the big picture overlook.
