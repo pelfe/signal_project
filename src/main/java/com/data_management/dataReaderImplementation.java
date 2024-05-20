@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 
-public class dataReaderImplementation implements DataReader {
+public class DataReaderImplementation implements DataReader {
 
     private String location;
 
@@ -17,7 +17,7 @@ public class dataReaderImplementation implements DataReader {
     * 
     * @param location the folder to read data from
     */
-    public dataReaderImplementation(String location){
+    public DataReaderImplementation(String location){
         this.location = location;
     }
 
@@ -52,10 +52,12 @@ public class dataReaderImplementation implements DataReader {
         for (final File fileEntry : folder.listFiles()){
             if (!fileEntry.isDirectory()) {
                 try {
+                    
                     fr = new FileReader(fileEntry);
                     br = new BufferedReader(fr);
 
                     while ((line = br.readLine()) != null) {
+                        System.out.println(line);
                         this.readDataLine(line, dataStorage);
                     }
                     } catch (IOException e) {
@@ -68,12 +70,26 @@ public class dataReaderImplementation implements DataReader {
     private void readDataLine(String line, DataStorage storage){
         String[] parts = line.split(",");
 
-        int id = Integer.parseInt(parts[0].split(":")[1]);
-        long timestamp = Long.parseLong(parts[1].split(":")[1]);
-        String recordType = parts[2].split(":")[1];
-        double measurementValue = Double.parseDouble(parts[3].split(":")[1]);
-
+        int id = Integer.parseInt(parts[0].split(":")[1].trim());
+        long timestamp = Long.parseLong(parts[1].split(":")[1].trim(), 10);
+        String recordType = parts[2].split(":")[1].trim();
+        double measurementValue = 0;
+        
+        switch(recordType){
+            case "Alert":
+                // can not be handled since records only accept doubles as value
+                return;
+            case "Saturation":
+                measurementValue = Double.parseDouble(parts[3].split(":")[1].trim().replaceAll("%", ""));
+                break;
+            default:
+                measurementValue = Double.parseDouble(parts[3].split(":")[1].trim());
+                break;
+        }
         storage.addPatientData(id, measurementValue, recordType, timestamp);
+        return;
+        
+        
     }   
     
 }
