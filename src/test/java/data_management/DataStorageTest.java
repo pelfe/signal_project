@@ -1,14 +1,14 @@
 package data_management;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import com.data_management.DataReader;
-import com.data_management.DataReaderImplementation;
 import com.data_management.DataStorage;
 import com.data_management.PatientRecord;
-
-import java.util.List;
+import com.data_management.dataReaderImplementation;
 
 class DataStorageTest {
 
@@ -16,7 +16,7 @@ class DataStorageTest {
     void testAddAndGetRecords() {
         // DataReader reader
         DataStorage storage = new DataStorage();
-        DataReader myDataReader = new DataReaderImplementation("src\\test\\java\\data_management\\TestDataFiles\\DataStorageTestFiles");
+        DataReader myDataReader = new dataReaderImplementation("src\\test\\java\\data_management\\TestDataFiles\\DataStorageTestFiles");
         try {
             myDataReader.readData(storage);
         } catch (Exception e) {
