@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 
-public class DataReaderImplementation implements DataReader {
+public class dataReaderImplementation implements DataReader {
 
     private String location;
 
@@ -17,7 +17,7 @@ public class DataReaderImplementation implements DataReader {
     * 
     * @param location the folder to read data from
     */
-    public DataReaderImplementation(String location){
+    public dataReaderImplementation(String location){
         this.location = location;
     }
 

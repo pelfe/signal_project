@@ -1,15 +1,11 @@
 package data_management;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 
 import com.data_management.DataReader;
-import com.data_management.DataReaderImplementation;
 import com.data_management.DataStorage;
-import com.data_management.PatientRecord;
+import com.data_management.dataReaderImplementation;
 
 public class DataReaderTest {
     @Test
@@ -25,7 +21,7 @@ public class DataReaderTest {
      */
     void massTest(){
         DataStorage storage = new DataStorage();
-        DataReader myDataReader = new DataReaderImplementation("src\\test\\java\\data_management\\TestDataFiles\\DataReaderMassTestFiles");
+        DataReader myDataReader = new dataReaderImplementation("src\\test\\java\\data_management\\TestDataFiles\\DataReaderMassTestFiles");
         try {
             myDataReader.readData(storage);
         } catch (Exception e) {
@@ -36,7 +32,7 @@ public class DataReaderTest {
 
     void edgeCaseTest(){
         DataStorage storage = new DataStorage();
-        DataReader myDataReader = new DataReaderImplementation("src\\test\\java\\data_management\\TestDataFiles\\DataReaderEdgeCaseTestFiles");
+        DataReader myDataReader = new dataReaderImplementation("src\\test\\java\\data_management\\TestDataFiles\\DataReaderEdgeCaseTestFiles");
         try {
             myDataReader.readData(storage);
         } catch (Exception e) {
