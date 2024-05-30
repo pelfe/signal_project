@@ -57,7 +57,6 @@ public class DataReaderImplementation implements DataReader {
                     br = new BufferedReader(fr);
 
                     while ((line = br.readLine()) != null) {
-                        System.out.println(line);
                         this.readDataLine(line, dataStorage);
                     }
                     } catch (IOException e) {
