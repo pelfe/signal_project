@@ -20,7 +20,7 @@ public class DataReaderTest {
      * 
      */
     void massTest(){
-        DataStorage storage = new DataStorage();
+        DataStorage storage = DataStorage.getInstance();
         DataReader myDataReader = new dataReaderImplementation("src\\test\\java\\data_management\\TestDataFiles\\DataReaderMassTestFiles");
         try {
             myDataReader.readData(storage);
@@ -31,7 +31,7 @@ public class DataReaderTest {
     }
 
     void edgeCaseTest(){
-        DataStorage storage = new DataStorage();
+        DataStorage storage = DataStorage.getInstance();
         DataReader myDataReader = new dataReaderImplementation("src\\test\\java\\data_management\\TestDataFiles\\DataReaderEdgeCaseTestFiles");
         try {
             myDataReader.readData(storage);

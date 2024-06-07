@@ -65,7 +65,6 @@ public class HealthDataSimulator {
     }
 
     
-    
     /** 
      * parses the arguments given to the HealthDataSimulator as a String and
      * uses them to set parameters accordingly
