@@ -15,7 +15,7 @@ class DataStorageTest {
 
     @Test
     void testAddAndGetRecords() {
-        // DataReader reader
+        DataStorage.wipeClean();
         DataStorage storage = DataStorage.getInstance();
         DataReader myDataReader = new dataReaderImplementation("src\\test\\java\\data_management\\TestDataFiles\\DataStorageTestFiles");
         try {
@@ -34,6 +34,7 @@ class DataStorageTest {
 
     @Test
     void getAllPatients(){
+        DataStorage.wipeClean();
         DataStorage storage = DataStorage.getInstance();
         storage.addPatientData(1, 300.0, "WhiteBloodCells", 1714376789051L);
         storage.addPatientData(2, 300.0, "WhiteBloodCells", 1714376789051L);
@@ -44,6 +45,7 @@ class DataStorageTest {
 
     @Test
     void singletonTest(){
+        DataStorage.wipeClean();
         DataStorage storage = DataStorage.getInstance();
         DataStorage storage2 = DataStorage.getInstance();
         assertEquals(storage, storage2);

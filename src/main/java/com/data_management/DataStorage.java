@@ -24,12 +24,14 @@ public class DataStorage {
     }
 
     public static DataStorage getInstance(){
-        if( existentDataStorage == null){
-            return new DataStorage();
+        if(existentDataStorage == null){
+            existentDataStorage = new DataStorage();
         }
-        
         return existentDataStorage;
-        
+    }
+
+    public static void wipeClean(){
+        existentDataStorage = null;
     }
 
     /**

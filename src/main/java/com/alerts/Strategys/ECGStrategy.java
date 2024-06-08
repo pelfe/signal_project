@@ -1,4 +1,4 @@
-package com.alerts;
+package com.alerts.Strategys;
 
 import java.util.List;
 
@@ -13,7 +13,6 @@ public class ECGStrategy implements AlertStrategy{
 
         final double BEAT_THRESHOLD = 1.5;
         double lastBeatInterval = 0;
-        double prevBeatInterval = 0;
         DataStorage dataStorage = DataStorage.getInstance();
         List<PatientRecord> records = dataStorage.getRecords(patient.getPatientId(), 0, Long.MAX_VALUE);
 
@@ -28,7 +27,6 @@ public class ECGStrategy implements AlertStrategy{
                 return true;
             }
             // Updating
-            prevBeatInterval = lastBeatInterval;
             lastBeatInterval = newBeatInterval;
         
         }
