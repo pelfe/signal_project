@@ -43,7 +43,7 @@ public class HealthDataSimulator {
     private static ScheduledExecutorService scheduler;
     private static OutputStrategy outputStrategy = new ConsoleOutputStrategy(); // Default output strategy
     private static final Random random = new Random();
-
+    private static HealthDataSimulator existentHealthDataSimulator = null;
     
     /** 
      * takes the additional starting parameters for the class.
@@ -64,7 +64,16 @@ public class HealthDataSimulator {
         scheduleTasksForPatients(patientIds);
     }
 
-    
+    private HealthDataSimulator() {
+        super();
+    }
+
+    public HealthDataSimulator getInstance(){
+        if(existentHealthDataSimulator == null){
+            existentHealthDataSimulator = new HealthDataSimulator();
+        }
+        return existentHealthDataSimulator;
+    }
     /** 
      * parses the arguments given to the HealthDataSimulator as a String and
      * uses them to set parameters accordingly
@@ -171,7 +180,6 @@ public class HealthDataSimulator {
         return patientIds;
     }
 
-    
     /** 
      * Initializes Data Generating Objects for:
      * ecg, bloodSaturation, bloodPressure, bloodLevel and alert

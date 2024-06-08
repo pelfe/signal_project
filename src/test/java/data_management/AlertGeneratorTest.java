@@ -82,6 +82,7 @@ public class AlertGeneratorTest {
         // Irregular values, should give and not give alers basically
         dataStorage.addPatientData(1, 50, "heart_rate", System.currentTimeMillis());
         dataStorage.addPatientData(1, 300, "heart_rate", System.currentTimeMillis() + 1);
+        
     }
 
 
