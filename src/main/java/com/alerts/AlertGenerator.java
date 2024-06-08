@@ -51,7 +51,6 @@ public class AlertGenerator {
      * @param patient the patient data to evaluate for alert conditions
      */
     public void evaluateData(Patient patient) {
-
         List<PatientRecord> records = dataStorage.getRecords(patient.getPatientId(), 0, Long.MAX_VALUE);
         for (PatientRecord record : records) {
             //Step 1:
@@ -83,7 +82,7 @@ public class AlertGenerator {
 
 
     public void systolicDiabolic(PatientRecord record) {
-
+        AlertFactory alertFactory = new BloodPressureFactory();
         //Step 1:
         //Checks whether the systolic and diastolic blood pressure is above or below the normal
         if (record.getRecordType().equals("systolic_bp")) {
@@ -92,13 +91,13 @@ public class AlertGenerator {
             double diff1 = record.getMeasurementValue() - lastSys.getMeasurementValue();
             double diff2 = lastSys.getMeasurementValue() - prevSys.getMeasurementValue();
             if ((diff1 > 10 && diff2 > 10) || (diff1 < -10 && diff2 < -10)) {
-                triggerAlert(new Alert(Integer.toString(record.getPatientId()), "Trend change for systolic blood pressure", record.getTimestamp()));
+                triggerAlert(alertFactory.makeAlert(record.getPatientId(), "Trend change for systolic blood pressure", record.getTimestamp()));
             }
             if (record.getMeasurementValue() > 180) {
-                triggerAlert(new Alert(Integer.toString(record.getPatientId()), "Systolic Blood pressure is high", record.getTimestamp()));
-            } 
+                triggerAlert(alertFactory.makeAlert(record.getPatientId(), "Systolic Blood pressure is high", record.getTimestamp()));
+            }
             else if (record.getMeasurementValue() < 90) {
-                triggerAlert(new Alert(Integer.toString(record.getPatientId()), "Systolic blood pressure is low", record.getTimestamp()));
+                triggerAlert(alertFactory.makeAlert(record.getPatientId(), "Systolic blood pressure is low", record.getTimestamp()));
             }
         }
 
@@ -108,27 +107,28 @@ public class AlertGenerator {
             double diff1 = record.getMeasurementValue() - lastDias.getMeasurementValue();
             double diff2 = lastDias.getMeasurementValue() - prevDias.getMeasurementValue();
             if ((diff1 > 10 && diff2 > 10) || (diff1 < -10 && diff2 < -10)) {
-                triggerAlert(new Alert(Integer.toString(record.getPatientId()), "Trend change for diastolic blood pressure", record.getTimestamp()));
+                triggerAlert(alertFactory.makeAlert(record.getPatientId(), "Trend change for diastolic blood pressure", record.getTimestamp()));
             }
             if (record.getMeasurementValue() > 120) {
-                triggerAlert(new Alert(Integer.toString(record.getPatientId()), "High blood pressure detected!", record.getTimestamp()));
+                triggerAlert(alertFactory.makeAlert(record.getPatientId(), "High blood pressure detected!", record.getTimestamp()));
             }
             else if (record.getMeasurementValue() < 60) {
-                triggerAlert(new Alert(Integer.toString(record.getPatientId()), "Low blood pressure detected!", record.getTimestamp()));
+                triggerAlert(alertFactory.makeAlert(record.getPatientId(), "Low blood pressure detected!", record.getTimestamp()));
             }
         }
     }
 
     //Checks whether saturation is below 92% or if it decreases rapidly
     public void saturation(PatientRecord record) {
+        AlertFactory alertFactory = new BloodSaturationFactory();
         //Step 2:
         if (record.getRecordType().equals("Saturation")) {
             if (record.getMeasurementValue() < 92) {
-                triggerAlert(new Alert(Integer.toString(record.getPatientId()), "Low saturation", record.getTimestamp()));
+                triggerAlert(alertFactory.makeAlert(record.getPatientId(), "Low saturation", record.getTimestamp()));
             } 
             else if (prevSat != null && lastSat != null && (record.getTimestamp() - prevSat.getTimestamp()) <= 10 * 60 * 1000){
                 if ((prevSat.getMeasurementValue() - record.getMeasurementValue()) >= 5) {
-                    triggerAlert(new Alert(Integer.toString(record.getPatientId()), "Saturation decreasing rapidly", record.getTimestamp()));
+                    triggerAlert(alertFactory.makeAlert(record.getPatientId(), "Saturation decreasing rapidly", record.getTimestamp()));
                 }
             }
         }
@@ -138,10 +138,11 @@ public class AlertGenerator {
 
         //Checks whether the patient has a hypotensive hypoxic condition.
     public void HypetensiveHypoxemia(PatientRecord record) {
+        AlertFactory alertFactory = new HypothermiaFactory();
         //Step 3:
         if (lastSys != null && lastSat != null) {
             if (lastSys.getMeasurementValue() < 90 && lastSat.getMeasurementValue() < 92) {
-                triggerAlert(new Alert(Integer.toString(lastSys.getPatientId()), "Hypotensive hypoxeia alert!", lastSys.getTimestamp()));
+                triggerAlert(alertFactory.makeAlert(record.getPatientId(), "Hypotensive hypoxeia alert!", lastSys.getTimestamp()));
             }
         }
     }
@@ -151,7 +152,8 @@ public class AlertGenerator {
 
     //Alert by nonsystematic feedback from the patient or from nearby nurse
     public void triggeredByButtonOrbyStaff(int patientId) {
-        triggerAlert(new Alert(Integer.toString(patientId), "Patient alerts!", System.currentTimeMillis()));
+        AlertFactory alertFactory = new staffAlertFactory();
+        triggerAlert(alertFactory.makeAlert(patientId, "Patient alerts!", System.currentTimeMillis()));
     }
 
 
@@ -160,12 +162,13 @@ public class AlertGenerator {
     //So we just want an interval in which
 
     public void IrregularBeatPeriod(PatientRecord record) {
+        AlertFactory alertFactory = new IrregularBeatsFactory();
         // Calculate the new beat interval
         double newBeatInterval = System.currentTimeMillis() - record.getTimestamp();
 
         // So if it's 1.5 bigger/smaller than last one, then it's irregular, that's arbitrary example.
         if (lastBeatInterval != 0 && Math.abs(newBeatInterval - lastBeatInterval) > lastBeatInterval * BEAT_THRESHOLD) {
-            triggerAlert(new Alert(Integer.toString(record.getPatientId()), "Irregular beats", record.getTimestamp()));
+            triggerAlert(alertFactory.makeAlert(record.getPatientId(), "Irregular beats", record.getTimestamp()));
         }
         // Updating
         prevBeatInterval = lastBeatInterval;
