@@ -89,27 +89,31 @@ public class AlertGenerator {
         if (record.getRecordType().equals("systolic_bp")) {
             prevSys = lastSys;
             lastSys = record;
-                double diff1 = record.getMeasurementValue() - lastSys.getMeasurementValue();
-                double diff2 = lastSys.getMeasurementValue() - prevSys.getMeasurementValue();
-                if ((diff1 > 10 && diff2 > 10) || (diff1 < -10 && diff2 < -10)) {
-                    triggerAlert(new Alert(Integer.toString(record.getPatientId()), "Trend change for systolic blood pressure", record.getTimestamp()));
-                }
+            double diff1 = record.getMeasurementValue() - lastSys.getMeasurementValue();
+            double diff2 = lastSys.getMeasurementValue() - prevSys.getMeasurementValue();
+            if ((diff1 > 10 && diff2 > 10) || (diff1 < -10 && diff2 < -10)) {
+                triggerAlert(new Alert(Integer.toString(record.getPatientId()), "Trend change for systolic blood pressure", record.getTimestamp()));
+            }
             if (record.getMeasurementValue() > 180) {
                 triggerAlert(new Alert(Integer.toString(record.getPatientId()), "Systolic Blood pressure is high", record.getTimestamp()));
-            } else if (record.getMeasurementValue() < 90) {
+            } 
+            else if (record.getMeasurementValue() < 90) {
                 triggerAlert(new Alert(Integer.toString(record.getPatientId()), "Systolic blood pressure is low", record.getTimestamp()));
             }
-        } else if (record.getRecordType().equals("diastolic_bp")) {
+        }
+
+        else if (record.getRecordType().equals("diastolic_bp")) {
             prevDias = lastDias;
             lastDias = record;
-                double diff1 = record.getMeasurementValue() - lastDias.getMeasurementValue();
-                double diff2 = lastDias.getMeasurementValue() - prevDias.getMeasurementValue();
-                if ((diff1 > 10 && diff2 > 10) || (diff1 < -10 && diff2 < -10)) {
-                    triggerAlert(new Alert(Integer.toString(record.getPatientId()), "Trend change for diastolic blood pressure", record.getTimestamp()));
-                }
+            double diff1 = record.getMeasurementValue() - lastDias.getMeasurementValue();
+            double diff2 = lastDias.getMeasurementValue() - prevDias.getMeasurementValue();
+            if ((diff1 > 10 && diff2 > 10) || (diff1 < -10 && diff2 < -10)) {
+                triggerAlert(new Alert(Integer.toString(record.getPatientId()), "Trend change for diastolic blood pressure", record.getTimestamp()));
+            }
             if (record.getMeasurementValue() > 120) {
                 triggerAlert(new Alert(Integer.toString(record.getPatientId()), "High blood pressure detected!", record.getTimestamp()));
-            } else if (record.getMeasurementValue() < 60) {
+            }
+            else if (record.getMeasurementValue() < 60) {
                 triggerAlert(new Alert(Integer.toString(record.getPatientId()), "Low blood pressure detected!", record.getTimestamp()));
             }
         }
@@ -121,13 +125,15 @@ public class AlertGenerator {
         if (record.getRecordType().equals("Saturation")) {
             if (record.getMeasurementValue() < 92) {
                 triggerAlert(new Alert(Integer.toString(record.getPatientId()), "Low saturation", record.getTimestamp()));
-            } else if (prevSat != null && lastSat != null && (record.getTimestamp() - prevSat.getTimestamp()) <= 10 * 60 * 1000)
+            } 
+            else if (prevSat != null && lastSat != null && (record.getTimestamp() - prevSat.getTimestamp()) <= 10 * 60 * 1000){
                 if ((prevSat.getMeasurementValue() - record.getMeasurementValue()) >= 5) {
                     triggerAlert(new Alert(Integer.toString(record.getPatientId()), "Saturation decreasing rapidly", record.getTimestamp()));
                 }
             }
-            prevSat = lastSat;
-            lastSat = record;
+        }
+        prevSat = lastSat;
+        lastSat = record;
         }
 
         //Checks whether the patient has a hypotensive hypoxic condition.
