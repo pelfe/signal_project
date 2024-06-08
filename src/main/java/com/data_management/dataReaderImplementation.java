@@ -10,6 +10,7 @@ import java.io.IOException;
 public class dataReaderImplementation implements DataReader {
 
     private String location;
+    private int port;
 
     /**
     * initiates the dataReaderImplementation object
