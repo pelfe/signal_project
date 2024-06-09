@@ -19,7 +19,7 @@ public class DataStorage {
      * Constructs a new instance of DataStorage, initializing the underlying storage
      * structure.
      */
-    private DataStorage() {
+    protected DataStorage() {
         this.patientMap = new HashMap<>();
     }
 
