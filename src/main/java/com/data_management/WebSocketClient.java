@@ -1,10 +1,12 @@
 package com.data_management;
 
 import java.io.IOException;
+import java.net.URI;
 
 public class WebSocketClient implements WebSocketDataReader {
     private DataStorage dataStorage;
-    private WebSocketClient client;
+    private MyWebSocketClient client;
+    private String uri;
 
     @Override
     public void readData(DataStorage dataStorage) throws IOException {
@@ -12,9 +14,10 @@ public class WebSocketClient implements WebSocketDataReader {
     }
 
     @Override
-    public void connect() {
+    public void connect(String uri) {
         try {
-            client = new WebSocketClient();
+            this.uri = uri;
+            client = new MyWebSocketClient(new URI(uri), dataStorage);
             client.connect();
         } catch (Exception e) {
             e.printStackTrace();
@@ -23,16 +26,15 @@ public class WebSocketClient implements WebSocketDataReader {
 
     @Override
     public void disconnect() {
-        try {
-            client.disconnect();
-        } catch (Exception e) {
-            System.out.println("Coulnd't disconnect from the server.");
-            e.printStackTrace();
+        if (client == null) {
+            System.out.println("There isn't any connection to the server.");
+        } else {
+            try {
+                client.disconnect();
+            } catch (Exception e) {
+                System.out.println("Couldn't disconnect from the server.");
+                e.printStackTrace();
+            }
         }
-    }
-
-    @Override
-    public void onMessage(String message) {
-        System.out.println("Message: " + message);
     }
 }

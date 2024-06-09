@@ -20,6 +20,8 @@ public class AlertGeneratorTest {
     //Step 1 tests!
     @Test
     public void CriticalThresholdTests() {
+        DataStorage.wipeClean();
+
         //Systolic extreme case tests, IE partitioning tests
         dataStorage.addPatientData(1, 222, "systolic_bp", System.currentTimeMillis());
         dataStorage.addPatientData(1, 42, "systolic_bp", System.currentTimeMillis());

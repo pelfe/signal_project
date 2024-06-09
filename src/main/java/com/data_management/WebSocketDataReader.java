@@ -11,8 +11,6 @@ public interface WebSocketDataReader {
      */
 
     void readData(DataStorage dataStorage) throws IOException;
-    void connect() throws IOException;
+    void connect(String uri) throws IOException;
     void disconnect() throws IOException;
-
-    void onMessage(String message);
 }
