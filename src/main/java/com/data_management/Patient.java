@@ -12,6 +12,7 @@ import java.util.List;
 public class Patient {
     private int patientId;
     private List<PatientRecord> patientRecords;
+    private List<String> alerts;
 
     /**
      * Constructs a new Patient with a specified ID.
@@ -22,6 +23,8 @@ public class Patient {
     public Patient(int patientId) {
         this.patientId = patientId;
         this.patientRecords = new ArrayList<>();
+        this.alerts = new ArrayList<>();
+
     }
 
     /**
@@ -63,5 +66,13 @@ public class Patient {
             }
         }
         return a;
+    }
+
+    public List<String> getAlerts() {
+        return alerts;
+    }
+
+    public void addAlert(String alert) {
+        alerts.add(alert);
     }
 }

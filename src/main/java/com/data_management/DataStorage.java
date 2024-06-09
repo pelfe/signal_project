@@ -102,12 +102,7 @@ public class DataStorage {
         // storage
         // reader.readData(storage);
         try {
-            String[] parts = message.split(",");
 
-            int id = Integer.parseInt(parts[0].split(":")[1].trim());
-            long timestamp = Long.parseLong(parts[1].split(":")[1].trim(), 10);
-            String recordType = parts[2].split(":")[1].trim();
-            double measurementValue = 0;
 
         } catch (Exception e) {
             System.out.println("Error reading data: " + e.getMessage());
